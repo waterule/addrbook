@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+
+spring:
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+  mvc:
+    view:
+      suffix: .html
+      prefix: /
+    static-path-pattern: /**
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    name: ll
+    url: jdbc:mysql://127.0.0.1:3306/userinfo?characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    # 使用druid数据源
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+
+#mybatis:
+  #mapper-locations: classpath:mapping/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  #type-aliases-package: com.winter.model  # 注意：对应实体类的路径
+
+
+
