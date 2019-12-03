@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通讯录</title>
+    <script src="../js/jquery-3.3.1.min.js"></script>
+</head>
+<style>
+
+    #tab td {
+        height: 37px;
+        vertical-align: middle;
+        font: 400 12px/37px 宋体;
+    }
+
+    td {
+     width:50px;
+     display: table-cell;
+     vertical-align: inherit;
+ }
+
+ table {
+    width:80%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-width: 0px; padding: 0px; margin: 0px; border-spacing: 0px; border-collapse: collapse;
+}
+span{
+  margin: 5px;
+  font-size:1px;
+}
+
+.btn {
+    float: left;
+    height: 16px;
+    line-height: 16px;
+    border: 1px solid #b5b6b8;
+    overflow: hidden;
+    background: url(/images/89690eb0.btn-bg.png) repeat-x;
+    cursor: default;
+    text-align: center;
+    padding: 6px 20px;
+    font-weight: 700;
+    z-index: 100;
+    margin-left: -1px;
+    position: relative;
+    color: #000;
+}
+
+.search-text {
+    border: 0;
+    width: 250px;
+    padding: 0 5px;
+    color: #000;
+    font-size: 14px;
+    background: url(/images/ecaaff3d.i-search.png) 240px center no-repeat;
+    margin-top: 3px;
+    float: right;
+    height: 30px;
+    margin-right: 80px;
+    
+}
+.btn-bar {
+    height: 30px;
+    background: #fff;
+    border-bottom: 1px dotted #bababa;
+    padding: 10px 15px 10px 20px;
+}
+a{ text-decoration:none} 
+
+a:link {
+ font-size: 12px;
+ color: #000000;
+ text-decoration: none;
+}
+a:visited {
+ font-size: 12px;
+ color: #000000;
+ text-decoration: none;
+}
+a:hover {
+ font-size: 12px;
+ color: #999999;
+ text-decoration: underline;
+}
+
+
+</style>
+<body>
+    <div class="btn-bar" id="contactsListBtnbar">
+        <span class="btn logClass" id="add_contact" >新建</span>
+        <span class="btn logClass btn-spacing" id="del_sel_contact">删除</span>
+
+        <span class="search"><input type="text" class="search-text" placeholder="按姓名、电话搜索" name="contact_search_text"></span>
+    </div>
+
+    <table id="tab" >
+        <tr>
+            <td><input type="checkbox" name="checkbox1" value="null" /></td>
+            <td>姓名</td>
+            <td>电话</td>
+            <td>工作单位</td>
+            <td>email</td>
+        </tr>
+    </table>
+
+</body>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script>
+    $(function () {
+
+       init();
+
+       $("#add_contact").click(function(){
+
+        window.location.href="./pubgoos.html";
+    });
+
+       $("#del_sel_contact").click(function () {
+        // body...
+
+        obj = document.getElementsByName("checkbox1");
+        check_val = [];
+        for(k in obj) {
+            if(obj[k].checked)
+              check_val.push(obj[k].value);
+      }
+
+
+      $.ajax({
+         type: 'POST',
+         url:'/delids',
+         dataType:'json',
+         contentType : "application/json",
+         data:JSON.stringify(check_val),
+         success:function (data) {
+            init();
+
+            console.log("del success");
+        }
+    });
+
+
+  });
+
+
+   });
+
+    function init(){
+
+      
+        $("#tab tbody tr").eq(0).nextAll().remove();
+
+        $.ajax({
+         type: 'get',
+         url:'/getaddrs',
+         success:function (data) {
+
+        var str = "";//定义用于拼接的字符串
+        for (var i = 0; i < data.length; i++) {
+            //拼接表格的行和列
+            str = "<tr><td><input type='checkbox' name='checkbox1' value='"+ data[i].id+"'/>" +"</td><td>"+ "<a href='./pubgoos.html?id="+ data[i].id+"''>" +data[i].name+"</a>" + "</td><td>" + data[i].tel +"</td><td>" +data[i].job + "</td><td>" +data[i].email+  "</td></tr>";
+             //追加到table中
+             $("#tab").append(str);         }
+
+         }
+     });
+
+    }
+
+
+
+    $('.search').bind('keyup', function(event) {
+       　　if (event.keyCode == "13") {
+　　　　      //回车执行查询
+　　　      　var  aa = $(".search-text").val(); 
+           aa = aa.replace(/\s*/g,"");
+           if(aa == null || aa =='')
+                init();
+           else
+               initsome();
+
+
+　　    }
+});
+
+
+
+
+    function initsome(){
+
+     
+        $("#tab tbody tr").eq(0).nextAll().remove();
+
+
+        var  users = $(".search-text").val(); 
+        $.ajax({
+         type: 'get',
+         url:'/sec/'+users,
+
+         success:function (data) {
+
+        var str = "";//定义用于拼接的字符串
+        for (var i = 0; i < data.length; i++) {
+            //拼接表格的行和列
+            str = "<tr><td><input type='checkbox' name='checkbox1' value='"+ data[i].id+"'/>" +"</td><td>"+ data[i].name + "</td><td>" + data[i].tel +"</td><td>" +data[i].job + "</td><td>" +data[i].email+  "</td></tr>";
+             //追加到table中
+             $("#tab").append(str);         }
+
+         }
+     });
+
+    }
+</script>
+</html>

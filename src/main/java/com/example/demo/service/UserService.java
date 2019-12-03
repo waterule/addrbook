@@ -14,5 +14,7 @@ public interface UserService {
     List<AddrBook> getbookslist();
     Long saveAddr(AddrBook book);
     List<AddrBook> getbooklist(String telOrName);
-    void deleteBook(Long id);
+    void deleteBook(List<Long> ids);
+
+    List<AddrBook> getbook(Long id);
 }

@@ -33,56 +33,57 @@ public class Init {
    @RequestMapping(value = "/" ,method = RequestMethod.GET)
    public ModelAndView init()
     {
-       return new ModelAndView("html/goodlist");
+       return new ModelAndView("html/index");
    }
-    @ApiOperation(value = "登陆校验")
-
-    @GetMapping("/login/{username}/{password}")
-
-    public String getUser(@PathVariable String username, @PathVariable String password){
-        Long usreid  =   userser.getuser(username,password);
-        return String.valueOf(usreid);
-
-    }
-
-    @ApiOperation(value = "是否已存在")
-
-    @GetMapping("/login/{username}")
-
-    public String getUser(@PathVariable String username){
-        boolean bb =   userser.ishasU(username);
-        if(bb)
-            return "00";
-        return "11";
-
-    }
-    @ApiOperation(value = "注册用户")
-    @GetMapping("/regs/{username}/{password}")
-    public String regis(@PathVariable String username, @PathVariable String password){
-        userser.saveUser(username,password);
-        return "success";
-    }
-    @ApiOperation(value = "发布物品")
-    @PostMapping(value = "/savegoods")
-    public  RespCom saveGood(@RequestBody Goods goods){
-        RespCom resp = new RespCom();
-        grepo.save(goods);
-        resp.setRescode("00");
-         return resp;
-    }
-
-    @ApiOperation(value = "查询物品list")
-    @GetMapping(value = "/getgoods")
-    public List<Goods> getgoodlist(){
-       return userser.getGoodslist();
-    }
 
 
-    @ApiOperation(value = "查询物品list")
+
+
+
+
+
+
+
     @GetMapping(value = "/getaddrs")
     public List<AddrBook> getaddrs(){
         return userser.getbookslist();
     }
+
+    @PostMapping(value = "/saveaddrbook")
+    public  RespCom saveAddr(@RequestBody AddrBook addrs){
+        RespCom resp = new RespCom();
+        userser.saveAddr(addrs);
+        resp.setRescode("00");
+        return resp;
+    }
+
+
+    @PostMapping(value = "/delids")
+    public  RespCom delids(@RequestBody List<Long> addrs){
+        RespCom resp = new RespCom();
+        userser.deleteBook(addrs);
+        resp.setRescode("00");
+        return resp;
+    }
+
+
+    @GetMapping("/sec/{username}")
+
+    public List<AddrBook> secuser(@PathVariable String username){
+        List<AddrBook> list =   userser.getbooklist(username);
+        return list;
+
+    }
+
+
+    @GetMapping("/edit/{id}")
+
+    public List<AddrBook> editaddr(@PathVariable Long id){
+        List<AddrBook> list =   userser.getbook(id);
+        return list;
+
+    }
+
 
 
 

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+
+    <title>新建/修改</title>
+</head>
+<style>
+    #fa, #ff{
+        border: 1px solid #A9E5BC;
+        border-radius: 5px;
+        padding:5px;
+        cursor:pointer;
+    }
+</style>
+<body>
+    <h1>新建/修改联系人</h1>
+
+    <p>姓名：<input id = 'name'></input></p>
+    <p>电话：<input id = 'tel'></input></p>
+    <p>工作单位：<input id = 'job'></input></p>
+    <p>e-mail：<input id ='email'></input></p>
+
+
+    <span id="fa">提交</span>
+    <span id="ff">返回</span>
+
+</body>
+<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+<script>
+
+    $(function () {
+        var id = getUrl("id");
+        console.log(id);
+
+        if(id!=null){
+          $.ajax({
+           type: 'get',
+           url:'/edit/'+id,
+
+           success:function (data) {
+              for (var i = 0; i < data.length; i++) {
+
+                  $('#name').val(data[i].name);
+                  $('#tel').val(data[i].tel);
+                  $('#job').val(data[i].job);
+                  $('#email').val(data[i].email);
+              }
+          }
+
+          });
+      }
+
+
+      $("#fa").click(function () {
+
+        var a =$('#name').val();
+        var b =$('#tel').val();
+        var c =$('#job').val();
+        var d =$('#email').val();
+        var addrbook ={
+            id:id,
+         name:a,
+         tel:b,
+         job:c,
+         email:d
+
+     };
+     $.ajax({
+        url:'/saveaddrbook',
+        type:'POST',
+
+        dataType:'json',
+        contentType : "application/json",
+        data:JSON.stringify(addrbook),
+        success:function () {
+
+           location.href = './addrbooklist.html';
+       },
+       error:function () {
+        console.log('fuck');
+
+
+    }
+});
+
+
+ });
+
+      $('#ff').click(function () {
+          // body...
+          window.location.href = './addrbooklist.html';
+      })
+  });
+
+
+    function getUrl(name, url) {
+      url = url || window.location.search;
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      var r = url.substr(1).match(reg);
+      if (r != null) return (r[2]);
+      return null;
+  }
+
+</script>
+</html>
