@@ -113,7 +113,7 @@ a:hover {
 
        $("#add_contact").click(function(){
 
-        window.location.href="./pubgoos.html";
+        window.location.href="./edit.html";
     });
 
        $("#del_sel_contact").click(function () {
@@ -159,7 +159,7 @@ a:hover {
         var str = "";//定义用于拼接的字符串
         for (var i = 0; i < data.length; i++) {
             //拼接表格的行和列
-            str = "<tr><td><input type='checkbox' name='checkbox1' value='"+ data[i].id+"'/>" +"</td><td>"+ "<a href='./pubgoos.html?id="+ data[i].id+"''>" +data[i].name+"</a>" + "</td><td>" + data[i].tel +"</td><td>" +data[i].job + "</td><td>" +data[i].email+  "</td></tr>";
+            str = "<tr><td><input type='checkbox' name='checkbox1' value='"+ data[i].id+"'/>" +"</td><td>"+ "<a href='./edit.html?id="+ data[i].id+"''>" +data[i].name+"</a>" + "</td><td>" + data[i].tel +"</td><td>" +data[i].job + "</td><td>" +data[i].email+  "</td></tr>";
              //追加到table中
              $("#tab").append(str);         }
 
